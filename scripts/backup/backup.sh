@@ -22,7 +22,7 @@ if [ -d "$BACK_DIR_PATH" ]
 then
     echo "[INFO] Directory $BACK_DIR_PATH already exists." >> $LOG_FILE_PATH
 else 
-    mkdir $BACK_DIR_PATH
+    mkdir -p $BACK_DIR_PATH
     echo "[INFO] Directory $BACK_DIR_PATH created." >> $LOG_FILE_PATH
 fi
 
