@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#---- FUNCTIONS ----------------------------------------------
+
 function get_important_files_path() {
     # Check if the first optional parameter is provided
     if [ -n "$1" ]; then
@@ -8,6 +10,7 @@ function get_important_files_path() {
         echo "./tests/important_files"
     fi
 }
+
 
 function get_path_for_backup_files() {
     # Check if the second optional parameter is provided
@@ -18,18 +21,7 @@ function get_path_for_backup_files() {
     fi
 }
 
-#---- CONFIGS ---------------------------------------------- 
 
-# Change below variables to indicate the place 
-# you want to backup and where you wnat to store it.
-BACKUP_THIS=$(get_important_files_path)
-PATH_TO_BACKUPS=$(get_path_for_backup_files)
-LOG_FILE_NAME="backup.log"
-CURRENT_BACKUP_DIR="$PATH_TO_BACKUPS/backup_$(date "+%Y%m%d")"
-LOG_FILE_PATH="$CURRENT_BACKUP_DIR/$LOG_FILE_NAME"
-
-
-#---- FUNCTIONS ----------------------------------------------
 function create_directory_for_backups {
     if [ -d "$CURRENT_BACKUP_DIR" ]
     then
@@ -39,6 +31,7 @@ function create_directory_for_backups {
         echo "[INFO] Directory $CURRENT_BACKUP_DIR created." >> $LOG_FILE_PATH
     fi
 }
+
 
 function create_backup {
     echo "[INFO] File backuping has started at: $(date "+%Y%m%d %H:%M:%S")" >> $LOG_FILE_PATH
@@ -65,6 +58,7 @@ function create_backup {
     #---------------------------------------------------------------------------------
 }
 
+
 function remove_old_backups {
     max_subdirs=2
 
@@ -84,6 +78,16 @@ function remove_old_backups {
         done
     fi
 }
+
+
+#---- CONFIGS ---------------------------------------------- 
+# Change below variables to indicate the place 
+# you want to backup and where you wnat to store it.
+BACKUP_THIS=$(get_important_files_path)
+PATH_TO_BACKUPS=$(get_path_for_backup_files)
+LOG_FILE_NAME="backup.log"
+CURRENT_BACKUP_DIR="$PATH_TO_BACKUPS/backup_$(date "+%Y%m%d")"
+LOG_FILE_PATH="$CURRENT_BACKUP_DIR/$LOG_FILE_NAME"
 
 
 #---- MAIN ----------------------------------------------
