@@ -5,7 +5,8 @@ This is my bash playgroun created for lerning purpouses. As at dayli buiasis I h
 This repo contain a **scripts** folder where I will put all scripts and data for tests. I 
 
 ## 🦺 Backup Script
-Simple backup script for important files. Automates the process of backing up important files and directories to a specified backup location. Utilize `cp` comand and creates backup.log file with information about copying process.
+Simple backup script for important files. Automates the process of backing up important files and directories to a specified backup location. 
+Utilize `tar` command and creates backup.log file with information about copying process.
 
 Usage
 ```
