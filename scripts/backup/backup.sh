@@ -60,10 +60,11 @@ function create_backup {
 
 
 function remove_old_backups {
-    max_subdirs=2
-
+    max_subdirs=1
+    
     # Check the number of backups
-    subdir_count=$(find $PATH_TO_BACKUPS -maxdepth 1 -mindepth 1 -type d | wc -l)
+    subdir_count=$(find $PATH_TO_BACKUPS -maxdepth 1 -mindepth 1 -type d -regex '.*/backup_[0-9]+' | wc -l)
+    echo $subdir_count
     if (( $subdir_count > $max_subdirs ))
     then
         to_remove=$((subdir_count - max_subdirs))
@@ -71,10 +72,10 @@ function remove_old_backups {
         echo "[INFO] There is to many backup files"
         echo "  - Number of existing backups: $subdir_count"
         echo "  - Allowed backup count: $max_subdirs"
-        for dir in $(find $PATH_TO_BACKUPS -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' | sort -n | head -n $to_remove | awk '{print $2}')
+        for dir in $(find $PATH_TO_BACKUPS -mindepth 1 -maxdepth 1 -type d -regex '.*/backup_[0-9]+' -printf '%T@ %p\n' | sort -n | head -n $to_remove | awk '{print $2}')
         do
             echo "[INFO] Removing:" $dir
-            rm -rf $dir
+            rm -r $dir
         done
     fi
 }
