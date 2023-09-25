@@ -1,0 +1,12 @@
+# Use telnet to connect to VM port 25 to send msg to postfix
+
+HELO local.com
+MAIL FROM: oliwa@localhost
+RCPT TO: vagrant@localhost
+DATA
+Subject: Test Email
+This is a test email sent from my host machine to the virtual machine's Postfix.
+.
+
+# Exit telnet
+QUIT
