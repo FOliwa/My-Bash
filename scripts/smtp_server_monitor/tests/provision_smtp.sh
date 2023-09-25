@@ -1,12 +1,7 @@
-sudo apt update
-sudo apt install postfix -y
-sudo cp /etc/postfix/main.cf.proto /etc/postfix/main.cf
 
-posfix_conf="/etc/postfix/main.cf"
-echo "mailbox_size_limit = 0" | sudo tee -a $posfix_conf
-echo "recipeint_delimeter_value = +" | sudo tee -a $posfix_conf
-echo "inet_interface_value = loopback-only" | sudo tee -a $posfix_conf
+sudo apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postfix
 
-sudo systemctl enable postfix
-sudo systemctl start posfix
-
+# Configure Postfix for local delivery only (replace with your desired config)
+sudo postconf -e "mydestination = localhost"
+sudo service postfix restart
