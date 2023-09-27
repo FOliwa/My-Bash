@@ -10,5 +10,5 @@ Simple backup script for important files.
 ## 🗃️ File Organizer Script
 This Bash script focuses on managing and organizing files in provided directory by gruping them into subdirectiories based on their file extensions. 
 
-## 📯 Server Monitoring
+## 🐕‍🦺 Server Monitoring
 UNDER CONSTRUCTION
