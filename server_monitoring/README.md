@@ -1,4 +1,4 @@
-# 📯 SMTP Monitoring
+# 🐕‍🦺 Server Monitoring
 
 Create a Bash script that automates the process of monitoring a Linux server's resource usage:
 - CPU
