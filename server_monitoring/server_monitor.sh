@@ -1,45 +1,110 @@
 #!/bin/bash
 
-# Check CPU usage
-function get_cpu_usage() {
+# ============= Conifguration ================
+# Tune it for your needs.
+
+# In seconds:
+REFRESHING_INTREVAL=60
+
+CPU_TRESHOLD=10
+MEM_TRESHOLD=50
+DISK_TRESHOLD=80
+
+# Set to 1 to turn on sending email
+# NOTE: Additional configuration needed
+SEND_MAIL=0
+
+# ================ Functions =================
+function check_cpu_usage() {
     # NOTES:
     # top -b stands for batch mode (defult is interactive)
     #     -n 1 = we get only one batch
-    echo $(top -b -n 1 |grep "%CPU:"| awk '{print $2}'| cut -d. -f1)
-
+    usage=$(top -b -n 1 |grep "%CPU:"| awk '{print $2}'| cut -d, -f1)
+    if [ "$usage" -gt "$CPU_TRESHOLD" ]; then
+        echo "[ALERT] CPU usage above the treshold!"
+    else
+        echo 0
+    fi
 }
 
 function get_memory_usage() {
-    echo $(free -m |grep "Mem" |awk '{print $3/$2 * 100}')
+    usage=$(free -m |grep "Mem" |awk '{print $3/$2 * 100}')
+    if [ "$usage" -gt "$MEM_TRESHOLD" ]; then
+        echo "[ALERT] Disk usage above the treshold!"
+    else
+        echo 0
+    fi
 }
-
 
 function get_disk_usage() {
-    echo $(df -h / |awk 'NR==2 {print $5}' | cut -d% -f1)
+    usage=$(df -h / |awk 'NR==2 {print $5}' | cut -d% -f1)
+    if [ "$usage" -gt "$DISK_TRESHOLD" ]; then
+        echo "[ALERT] Memory usage above the treshold!"
+    else
+        echo 0
+    fi
 }
 
-# 
-data_refreshing_time=5
+function prepare_message() {
+    cpu_alert=$1
+    mem_alert=$2
+    disk_alert=$3
 
-cpu_treshold=10
-mem_treshold=
-disk_treshold=80
+    msg="Resource usage on your server has exceeded configured treshold.\n"
+
+    if [ "$cpu_alert" != 0 ]; then
+        msg+="$cpu_alert"
+        msg+="\n"
+    fi
+
+    if [ "$mem_alert" != 0 ]; then
+        msg+="$mem_alert"
+        msg+="\n"
+    fi
+
+    if [ "$disk_alert" != 0 ]; then
+        msg+=$disk_alert
+        msg+="\n"
+    fi
+    echo "$msg"
+}
+
+function send_mail_notification() {
+
+    # [NOTE] Check email settings!
+    #    If you want to send notifications to your for example: Gmail address, 
+    #    you'll need to configure your Gmail account accordingly and set up recipients.
+
+    message=$1
+
+    if [ "$SEND_MAIL" -eq "1" ]; then
+        recipents=""
+        subject="Server Alert"
+        echo  "$message" | mail -s "$subject" "$recipents"
+        
+    else
+        # NOTE: For tests purpouses run script and 
+        #       display email content in console
+        echo -e "$message"
+    fi
+}
 
 
-# Infinite loop
+# ============== Main loop ==============
 while true; do
     clear
     
-    cpu_usage=$(get_cpu_usage)
-    mem_usage=$(get_memory_usage)
-    disk_usage=$(get_disk_usage)
-   
-    echo "==================================="
-    echo " CPU Usage: $cpu_usage"
-    echo " Memory Usage: $mem_usage"
-    echo " Disk Usage: $disk_usage"
-    echo "==================================="
+    cpu_alert=$(check_cpu_usage)
+    mem_alert=$(get_memory_usage)
+    disk_alert=$(get_disk_usage)
 
-    sleep $data_refreshing_time
+    if [ "$cpu_alert" == 0 ] && [ "$mem_alert" == 0 ] && [ "$disk_alert" == 0 ]; then
+        echo "All good."
+    else
+        msg=$(prepare_message "$cpu_alert" "$mem_alert" "$disk_alert")
+        send_mail_notification "$msg"
+    fi
+
+    sleep $REFRESHING_INTREVAL
 
 done
