@@ -12,6 +12,11 @@ The script contains a testing set o predefined tresholds for each parameter - th
 - [x] Compare these metrics to predefined thresholds.
 - [x] If any metric exceeds its threshold, send an email notification with details about the high resource usage.
 
+# Enhancements
+- [ ] Implement additional resource checks, such as network connectivity or specific service availability.
+- [ ] Parameterize the script to allow the user to specify monitoring intervals, email recipients, and thresholds.
+- [ ] Create a dashboard or visualization for monitoring data (e.g., use tools like Grafana and Prometheus).
+
 # Email notification requirements
 - By default it is turned off - the email content would be displayed in terminal
 - To send email notification addtional configuration is needed. You have to sonfigure your email smtp server to be able to send email out of the system where the script is running.

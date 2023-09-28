@@ -27,7 +27,7 @@ function check_cpu_usage() {
     fi
 }
 
-function get_memory_usage() {
+function check_memory_usage() {
     usage=$(free -m |grep "Mem" |awk '{print $3/$2 * 100}')
     if [ "$usage" -gt "$MEM_TRESHOLD" ]; then
         echo "[ALERT] Disk usage above the treshold!"
@@ -36,7 +36,7 @@ function get_memory_usage() {
     fi
 }
 
-function get_disk_usage() {
+function check_disk_usage() {
     usage=$(df -h / |awk 'NR==2 {print $5}' | cut -d% -f1)
     if [ "$usage" -gt "$DISK_TRESHOLD" ]; then
         echo "[ALERT] Memory usage above the treshold!"
@@ -80,7 +80,7 @@ function send_mail_notification() {
     if [ "$SEND_MAIL" -eq "1" ]; then
         recipents=""
         subject="Server Alert"
-        echo  "$message" | mail -s "$subject" "$recipents"
+        echo -e "$message" | mail -s "$subject" "$recipents"
         
     else
         # NOTE: For tests purpouses run script and 
@@ -95,8 +95,8 @@ while true; do
     clear
     
     cpu_alert=$(check_cpu_usage)
-    mem_alert=$(get_memory_usage)
-    disk_alert=$(get_disk_usage)
+    mem_alert=$(check_memory_usage)
+    disk_alert=$(check_disk_usage)
 
     if [ "$cpu_alert" == 0 ] && [ "$mem_alert" == 0 ] && [ "$disk_alert" == 0 ]; then
         echo "All good."
