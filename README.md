@@ -11,4 +11,7 @@ Simple backup script for important files.
 This Bash script focuses on managing and organizing files in provided directory by gruping them into subdirectiories based on their file extensions. 
 
 ## 🐕‍🦺 Server Monitoring
-UNDER CONSTRUCTION
+A Bash script that automates the process of monitoring a Linux server's resource usage
+
+# 🍒 Disclaimer
+All scripts was done to practice bash - as writing bash is enjoable and better than watching 📺Netflix📺 
