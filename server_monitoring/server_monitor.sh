@@ -19,7 +19,7 @@ function check_cpu_usage() {
     # NOTES:
     # top -b stands for batch mode (defult is interactive)
     #     -n 1 = we get only one batch
-    usage=$(top -b -n 1 |grep "%CPU:"| awk '{print $2}'| cut -d, -f1)
+    usage=$(top -b -n 1 |grep "%Cpu"| awk '{print $2}'| cut -d, -f1)
     if [ "$usage" -gt "$CPU_TRESHOLD" ]; then
         echo "[ALERT] CPU usage above the treshold!"
     else
@@ -28,7 +28,7 @@ function check_cpu_usage() {
 }
 
 function check_memory_usage() {
-    usage=$(free -m |grep "Mem" |awk '{print $3/$2 * 100}')
+    usage=$(free -m |grep "Mem" |awk '{print $3/$2 * 100}' | cut -d, -f1)
     if [ "$usage" -gt "$MEM_TRESHOLD" ]; then
         echo "[ALERT] Disk usage above the treshold!"
     else
