@@ -4,13 +4,13 @@ This is my bash playgroun created for lerning purpouses. As at dayli buiasis I h
 # 🪛 Scripts
 This repo contains scripts and related test data. The Scripots was created for educational and entertainment purpouses.
 
-## 🦺 Easy Backup
+- 🦺 Easy Backup
 Simple backup script for important files. 
 
-## 🗃️ File Organizer Script
+- 🗃️ File Organizer
 This Bash script focuses on managing and organizing files in provided directory by gruping them into subdirectiories based on their file extensions. 
 
-## 🐕‍🦺 Server Monitoring
+- 🐕‍🦺 Server Monitoring
 A Bash script that automates the process of monitoring a Linux server's resource usage
 
 # 🍒 Disclaimer
