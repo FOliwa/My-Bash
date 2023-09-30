@@ -7,12 +7,12 @@ A Bash script that automates the process of monitoring a Linux server's resource
 
 The script contains a testing set o predefined tresholds for each parameter - thouse schould be tune for personal needs.
 
-# The script objectives
+# Objectives
 - [x] Periodically collect server resource metrics, including CPU usage, memory usage, and disk space usage.
 - [x] Compare these metrics to predefined thresholds.
 - [x] If any metric exceeds its threshold, send an email notification with details about the high resource usage.
 
-# Enhancements
+# TBD - Enhancements
 - [ ] Implement additional resource checks, such as network connectivity or specific service availability.
 - [ ] Parameterize the script to allow the user to specify monitoring intervals, email recipients, and thresholds.
 - [ ] Create a dashboard or visualization for monitoring data (e.g., use tools like Grafana and Prometheus).
