@@ -18,8 +18,7 @@ function connection_test() {
 
 function setup_password_policie() {
     # Configure password policies in the pwquality.conf
-    # policies_conf=/etc/security/pwquality.conf
-    config_file=./test.txt
+    policies_conf=/etc/security/pwquality.conf
 
     # Password Quality Requirements. 
     # Each element contains "item value" pair.
@@ -75,6 +74,4 @@ function setup_password_policie() {
 #   the function definition and then call I can call it to execute remotelly.
 #   declare -f some_function allowe me to retrieve function definition.
 
-# ssh -i "$ssh_key" "$ssh_user@$remote_server" "$(declare -f connection_test); connection_test"
-
-setup_password_policie
+ssh -i "$ssh_key" "$ssh_user@$remote_server" "$(declare -f connection_test); connection_test"
