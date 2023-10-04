@@ -34,14 +34,14 @@ function setup_password_policie() {
         IFS=" " read -r item_name item_value <<< "$item"
 
         pattern="^$item_name=.*"
-        if grep -q "$pattern" "$config_file"; then
+        if grep -q "$pattern" "$policies_conf"; then
             # Replace existing row with the new value
             echo "$item_name found in file! New value set!"
             sed -i "s/$pattern/$item_name=$item_value/" $policies_conf
         else
             # If there is no matching pattern in conf file append new row
             echo "Appended $item_name to the config file."
-            echo "$item_name=$item_value" >> "$config_file"
+            echo "$item_name=$item_value" >> "$policies_conf"
         fi
     done
 }
