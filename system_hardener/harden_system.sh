@@ -46,9 +46,24 @@ function setup_password_policie() {
     done
 }
 
-# function setup_firewall_rules() {
-# # TBD
-# }
+function setup_firewall_rules() {
+    # Set up a firewall to filter incoming and outgoing traffic
+    # Use ufw or iptables command to create rules that allow only necessary network traffic
+
+    # Determine Your Requirements - check services and ports using by them
+    HTTP_PORT = 80      # HTTP
+    HTTPS_PORT = 443    # HTTPS
+    SSH_PORT = 22       # SSH
+
+    # Set a default policy for incoming and outgoing traffic.
+    # - default policy for incoming traffic = "DROP"
+    # - default policy for outgoing traffic = "ALLOW"
+
+    # Allow Necessary Services by allowing incoming traffic only on ports required for your services
+    # If you need SSH access, allow SSH (port 22) traffic, but consider restricting it to specific IP addresses or using SSH keys for authentication.
+
+    # TBD
+}
 
 # function check_updates() {
 # # TBD
