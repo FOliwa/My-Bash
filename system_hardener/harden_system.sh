@@ -55,14 +55,24 @@ function setup_firewall_rules() {
     HTTPS_PORT = 443    # HTTPS
     SSH_PORT = 22       # SSH
 
-    # Set a default policy for incoming and outgoing traffic.
-    # - default policy for incoming traffic = "DROP"
-    # - default policy for outgoing traffic = "ALLOW"
+    # Set a default policy
+    # -------------------------------------------------------------------------------
+    # Denies all traffic by default = improving security by blocking incoming traffic 
+    # unless specifically allowed by firewall rules.
+    iptables -P INPUT DROP
+    # Allow the server to initiate connections
+    iptables -P OUTPUT ACCEPT
 
-    # Allow Necessary Services by allowing incoming traffic only on ports required for your services
-    # If you need SSH access, allow SSH (port 22) traffic, but consider restricting it to specific IP addresses or using SSH keys for authentication.
 
-    # TBD
+    # Allow Necessary Services - allow incoming traffic only on ports required for your services
+    # ------------------------------------------------------------------------------------------
+    # Append a specific rule to allow incoming traffic on port 22 (for SSH access)
+    iptables -A INPUT -p tcp -dport 22 -j ACCEPT
+
+    # Append a specific rule to allow incoming trafic on port 80 and 443(for web server: HTTP and HTTPS)
+    iptables -A INPUT -p tcp -dport 80 -j ACCEPT
+    iptables -A INPUT -p tcp -dport 443 -j ACCEPT
+
 }
 
 # function check_updates() {
