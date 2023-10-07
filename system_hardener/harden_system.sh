@@ -77,9 +77,26 @@ function setup_firewall_rules() {
     # ------------------------------------------------------------------------------------------
 }
 
-# function check_updates() {
-# # TBD
-# }
+function enable_automatic_updates() {
+    # Define the schedule for updates (e.g., daily at 3 AM)
+    CRON_SCHEDULE="0 3 * * *"
+    
+    # Define the update command
+    UPDATE_COMMAND="apt-get update && apt-get upgrade -y"
+    
+    # Add the scheduled task to root's Crontab
+    (crontab -l 2>/dev/null; echo "$CRON_SCHEDULE $UPDATE_COMMAND") | crontab -
+    # ------------------------------------------------------------------------------------------
+    # NOTES:
+    # ------------------------------------------------------------------------------------------
+    # crontam -l list the current crontab entrie. I did it only to protect 
+    #            myself from accydentally overwriting or lose existing crontab entries
+    # echo new crontab entry I want to add
+    # | crontab - pipe new entry and tell crontab to read new entry from stdin rether than from a file
+    # ------------------------------------------------------------------------------------------
+
+    echo "Scheduled task for updates has been created."
+}
 
 # function review_unused_user_accounts() {
 # # TBD
