@@ -50,11 +50,6 @@ function setup_firewall_rules() {
     # Set up a firewall to filter incoming and outgoing traffic
     # Use ufw or iptables command to create rules that allow only necessary network traffic
 
-    # Determine Your Requirements - check services and ports using by them
-    HTTP_PORT = 80      # HTTP
-    HTTPS_PORT = 443    # HTTPS
-    SSH_PORT = 22       # SSH
-
     # Set a default policy
     # -------------------------------------------------------------------------------
     # Denies all traffic by default = improving security by blocking incoming traffic 
@@ -62,17 +57,24 @@ function setup_firewall_rules() {
     iptables -P INPUT DROP
     # Allow the server to initiate connections
     iptables -P OUTPUT ACCEPT
-
+    # -------------------------------------------------------------------------------
 
     # Allow Necessary Services - allow incoming traffic only on ports required for your services
     # ------------------------------------------------------------------------------------------
-    # Append a specific rule to allow incoming traffic on port 22 (for SSH access)
-    iptables -A INPUT -p tcp -dport 22 -j ACCEPT
-
-    # Append a specific rule to allow incoming trafic on port 80 and 443(for web server: HTTP and HTTPS)
-    iptables -A INPUT -p tcp -dport 80 -j ACCEPT
-    iptables -A INPUT -p tcp -dport 443 -j ACCEPT
-
+    # Basic statefull rules - feel free to add more
+    # ------------------------------------------------------------------------------------------
+    # Accept packets in NEW and ESTABLISHED state for incomming connection
+    # Accept packets in ESTABLISHED state for outgoing connections
+    # For SSH
+    iptables -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+    # For HTTP
+    iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+    # For HTTPS
+    iptables -A INPUT -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+    # ------------------------------------------------------------------------------------------
 }
 
 # function check_updates() {
