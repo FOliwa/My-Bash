@@ -89,18 +89,23 @@ function enable_automatic_updates() {
     # ------------------------------------------------------------------------------------------
     # NOTES:
     # ------------------------------------------------------------------------------------------
-    # crontam -l list the current crontab entrie. I did it only to protect 
-    #            myself from accydentally overwriting or lose existing crontab entries
-    # echo new crontab entry I want to add
-    # | crontab - pipe new entry and tell crontab to read new entry from stdin rether than from a file
+    # crontab -l   ->  list the current crontab entrie. I did it only to protect 
+    #                  myself from accydentally overwriting or lose existing crontab entries
+    # echo         ->  new crontab entry I want to add
+    # | crontab -  ->  pipe new entry and tell crontab to read new entry from stdin rether than from a file
     # ------------------------------------------------------------------------------------------
-
     echo "Scheduled task for updates has been created."
 }
 
-# function review_unused_user_accounts() {
-# # TBD
-# }
+function review_unused_user_accounts() {
+    INACTIVE_THRESHOLD=180  # In Days
+
+    CURRENT_DATE_EPOCH=$(date +%s)
+    for username in $(cut -d: -f1); do
+        # Here do teh magic
+    done
+
+}
 
 # function disable_root_login_over_ssh() {
 # # TBD
