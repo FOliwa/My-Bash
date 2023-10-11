@@ -98,6 +98,7 @@ function enable_automatic_updates() {
 }
 
 function review_unused_user_accounts() {
+    # TODO: Check it on test env
     INACTIVE_THRESHOLD=180  # In Days
     INACTIVITY_DATE=$(date -d "$INACTIVE_THRESHOLD days ago" "+%Y%m%d%H%M%S")
     for username in $(cut -d: -f1,7 /etc/passwd | grep -v false | grep -v nologin); do
@@ -115,9 +116,9 @@ function review_unused_user_accounts() {
             lastlogin_timestamp=$(echo "$lastlog_data" | awk '{print $4, $5, $6, $7, $8}')
             formatted_timestamp=$(date -d "$lastlogin_timestamp" +"%Y%m%d%H%M%S")
             
-            
-            # 2. Calculate ...
-            # 4. Compare with defined treshold and decide what to do.
+            if last $username -s $INACTIVITY_DATE | head -n 1 | grep -q -v $username; then
+                echo "User: $username, Inactive for $INACTIVE_THRESHOLD days" 
+            fi
         fi
     done
 }
