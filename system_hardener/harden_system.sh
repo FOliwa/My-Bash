@@ -99,12 +99,27 @@ function enable_automatic_updates() {
 
 function review_unused_user_accounts() {
     INACTIVE_THRESHOLD=180  # In Days
+    INACTIVITY_DATE=$(date -d "$INACTIVE_THRESHOLD days ago" "+%Y%m%d%H%M%S")
+    for username in $(cut -d: -f1,7 /etc/passwd | grep -v false | grep -v nologin); do
+        # 0. To get only users account I assume that they have shell setup
+        #    System accounts usually have in shell part false of nologin text
+        #    Any way befor you delete or blocke any account check it manually!
 
-    CURRENT_DATE_EPOCH=$(date +%s)
-    for username in $(cut -d: -f1); do
-        # Here do teh magic
+        # 1. Get the users last login information from lastlog
+        lastlog_data=$(sudo lastlog -u "$username" | tail -n 1)
+
+        # 2. Check if user logged in to the system at least once
+        if echo $lastlog_data | grep -q "Never logged in"; then
+            echo "$username - Never Loged In"
+        else
+            lastlogin_timestamp=$(echo "$lastlog_data" | awk '{print $4, $5, $6, $7, $8}')
+            formatted_timestamp=$(date -d "$lastlogin_timestamp" +"%Y%m%d%H%M%S")
+            
+            
+            # 2. Calculate ...
+            # 4. Compare with defined treshold and decide what to do.
+        fi
     done
-
 }
 
 # function disable_root_login_over_ssh() {
