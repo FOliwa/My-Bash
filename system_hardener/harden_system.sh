@@ -6,7 +6,7 @@
 # For test purpouses I created Ubuntu VM
 # In your case you have to configure the script  
 # for your needs.
-remote_server=192.168.1.147
+remote_server=192.168.1.146
 ssh_user=oliwa
 ssh_key=/home/oliwa/.ssh/id_rsa.pub
 
@@ -123,13 +123,48 @@ function review_unused_user_accounts() {
     done
 }
 
-# function disable_root_login_over_ssh() {
-# # TBD
-# }
+function disable_root_login_over_ssh() {
+    echo Start checking root login over ssh
+    CONFIG_PATH="/etc/ssh/sshd_config"
+    DIRECTIVE="PermitRootLogin yes"
+    NEW_VAL="PermitRootLogin no"
+    if grep "^$DIRECTIVE" $CONFIG_PATH -q
+    then
+        echo Disabling root login over ssh
+        sed -i "s/$DIRECTIVE/$NEW_VAL/" sshd_config
+    fi
+    echo Done
+}
 
-# function disable_password_authentication_over_ssh() {
-# # TBD
-# }
+function disable_password_authentication_over_ssh() {
+    echo Start checking password authentication over ssh
+    CONFIG_PATH="/etc/ssh/sshd_config"
+    DIRECTIVE="PasswordAuthentication yes"
+    NEW_VAL="PasswordAuthentication no"
+    if grep "^$DIRECTIVE" $CONFIG_PATH -q
+    then
+        echo Disabling password authentication over SSH
+        sed -i "s/$DIRECTIVE/$NEW_VAL/" sshd_config
+    fi
+    echo Done
+}
+
+function check_ssh_setings() {
+    echo Checking ssh settings started
+    disable_root_login_over_ssh
+    disable_password_authentication_over_ssh
+    # HEY! 
+    # Normaly to restart ssh service you need sudo privilages.
+    # I dont want to put any passwords in script or do interactive sesion here,
+    # so I assume that on your server yout sudo settings 
+    # allow restarting ssh service without sudo autnetication to your user
+    # Something like:
+    # username ALL=(ALL) NOPASSWD: /usr/sbin/service ssh restart
+    echo Restarting SSH service 
+    systemctl restart ssh
+    echo All good
+}
+
 
 #================== SSH CONNECTION ====================
 # NOTE:
@@ -139,4 +174,4 @@ function review_unused_user_accounts() {
 #   the function definition and then call I can call it to execute remotelly.
 #   declare -f some_function allowe me to retrieve function definition.
 
-ssh -i "$ssh_key" "$ssh_user@$remote_server" "$(declare -f connection_test); connection_test"
+ssh -i "$ssh_key" "$ssh_user@$remote_server" "$(declare -f disable_root_login_over_ssh); disable_root_login_over_ssh"
