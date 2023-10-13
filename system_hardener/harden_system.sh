@@ -155,23 +155,30 @@ function check_ssh_setings() {
     disable_password_authentication_over_ssh
     # HEY! 
     # Normaly to restart ssh service you need sudo privilages.
-    # I dont want to put any passwords in script or do interactive sesion here,
-    # so I assume that on your server yout sudo settings 
+    # I dont want to put any passwords in script,
+    # so I assume that on your server you set sudo settings where you
     # allow restarting ssh service without sudo autnetication to your user
     # Something like:
     # username ALL=(ALL) NOPASSWD: /usr/sbin/service ssh restart
+    # Or if you prefer you will have to provaide a password
     echo Restarting SSH service 
-    systemctl restart ssh
+    sudo systemctl restart ssh
     echo All good
 }
 
 
 #================== SSH CONNECTION ====================
 # NOTE:
-# - Run functions on a remote server using SSH
-# - connection_test is a function defined in the script
-# - to run function remotely using ssh I have to retrieve 
-#   the function definition and then call I can call it to execute remotelly.
-#   declare -f some_function allowe me to retrieve function definition.
+# Run functions on a remote server using SSH
+# 1. copy the script using scp on remote server
+# 2. ssh to the remote server and run the scipt 
 
-ssh -i "$ssh_key" "$ssh_user@$remote_server" "$(declare -f disable_root_login_over_ssh); disable_root_login_over_ssh"
+function main() {
+    setup_password_policie
+    setup_firewall_rules
+    enable_automatic_updates
+    review_unused_user_accounts
+    check_ssh_setings
+}
+
+main

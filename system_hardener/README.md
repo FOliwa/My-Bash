@@ -6,14 +6,14 @@
 You should have a Linux server or virtual machine available for testing and hardening with sudo or root access on the system to make necessary changes.
 
  # Objective
- - [ ] Disabling unnecessary services and daemons.
- - [ ] Enforcing password policies (e.g., strong password requirements).
- - [ ] Configuring firewall rules to limit incoming and outgoing traffic.
- - [ ] Checking for and installing security updates.
- - [ ] Review and disable any unused or unnecessary user accounts.
- - [ ] SSH Hardening
-    - [ ] Disabling root login via SSH.
-    - [ ] Using key-based authentication instead of password authentication.
+ - [x] Disabling unnecessary services and daemons.
+ - [x] Enforcing password policies (e.g., strong password requirements).
+ - [x] Configuring firewall rules to limit incoming and outgoing traffic.
+ - [x] Checking for and installing security updates.
+ - [x] Review and disable any unused or unnecessary user accounts. (disabling have to by done manually)
+ - [x] SSH Hardening
+    - [x] Disabling root login via SSH.
+    - [x] Using key-based authentication instead of password authentication.
     - [ ] Limiting SSH access to specific IP addresses or ranges.
 - [ ] Set up log monitoring and log rotation to prevent log files from consuming too much disk space.
 
@@ -22,3 +22,21 @@ You should have a Linux server or virtual machine available for testing and hard
  - [ ] Enabling and configuring a host-based intrusion detection system (HIDS) like Fail2ban.
  - [ ] Creating a user audit trail for system events (e.g., using the auditd daemon).
  - [ ] Setting up regular automated system scans for vulnerabilities (e.g., using tools like Lynis or OpenVAS).
+
+# Usage
+1. Copy the script to remote server
+```
+scp -i "ssh_key" harden_system.sh "$ssh_user@$remote_server:/path/to/remote/directory"
+```
+2. Log in to the server over SSH
+```
+ssh -i "$ssh_key" "$ssh_user@$remote_server"
+```
+3. Make script execuytable on server
+```
+chmod +x harden_system.sh
+```
+4. Run the script
+```
+./my_script.sh
+```
