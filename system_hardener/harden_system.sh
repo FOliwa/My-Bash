@@ -1,20 +1,6 @@
 #!/bin/bash
 
-#================== CONFIGURATION ====================
-# Define SSH connectio variables
-
-# For test purpouses I created Ubuntu VM
-# In your case you have to configure the script  
-# for your needs.
-remote_server=192.168.1.146
-ssh_user=oliwa
-ssh_key=/home/oliwa/.ssh/id_rsa.pub
-
 #==================== FUNCTIONS ======================
-
-function connection_test() {
-    echo "$(date) - [TEST] Executing bash function remotelly over ssh." >> connection_test.txt
-}
 
 function setup_password_policie() {
     # Configure password policies in the pwquality.conf
@@ -150,10 +136,7 @@ function disable_password_authentication_over_ssh() {
 }
 
 function check_ssh_setings() {
-    echo Checking ssh settings started
-    disable_root_login_over_ssh
-    disable_password_authentication_over_ssh
-    # HEY! 
+    # == HEY! =========================================================== 
     # Normaly to restart ssh service you need sudo privilages.
     # I dont want to put any passwords in script,
     # so I assume that on your server you set sudo settings where you
@@ -161,17 +144,17 @@ function check_ssh_setings() {
     # Something like:
     # username ALL=(ALL) NOPASSWD: /usr/sbin/service ssh restart
     # Or if you prefer you will have to provaide a password
+    # ===================================================================
+    echo Checking ssh settings started
+    disable_root_login_over_ssh
+    disable_password_authentication_over_ssh
     echo Restarting SSH service 
     sudo systemctl restart ssh
     echo All good
 }
 
 
-#================== SSH CONNECTION ====================
-# NOTE:
-# Run functions on a remote server using SSH
-# 1. copy the script using scp on remote server
-# 2. ssh to the remote server and run the scipt 
+#================== Main ====================
 
 function main() {
     setup_password_policie
